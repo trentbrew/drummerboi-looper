@@ -1,4 +1,283 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
+  background-color: white;
 }
+
+.app {
+  text-align: center;
+}
+
+header {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 140px;
+}
+
+header h1 {
+  margin: 0px 0px 30px 0px;
+  text-align: center;
+  font-size: 42px;
+  color: black;
+}
+
+header p {
+  font-size: 20px;
+  color: black;
+  opacity: 0.4;
+  margin-top: -25px;
+}
+
+.pads {
+  position: absolute;
+  width: 100%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  display: -ms-grid;
+  display: grid;
+  border-radius: 200px 200px 0px 0px;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  bottom: 0px;
+}
+
+.pads > div {
+  height: 50vh;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+  text-align: left;
+}
+
+.pads > div span {
+  position: absolute;
+  bottom: 0px;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  opacity: 0.3;
+  padding: 0px 0px 30px 45px;
+}
+
+.pads > div:hover {
+  -webkit-filter: brightness(0.7);
+          filter: brightness(0.7);
+  cursor: pointer;
+}
+
+.pad1 {
+  background: #e57373;
+}
+
+.pad2 {
+  background: #FFA726;
+}
+
+.pad3 {
+  background: #FFEB3B;
+}
+
+.pad4 {
+  background: #66BB6A;
+}
+
+.pad5 {
+  background: #1E88E5;
+}
+
+.pad6 {
+  background: #CE93D8;
+}
+
+#visual {
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 120px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 140px;
+  top: calc(50% - 10px);
+  -webkit-animation: wave 8s linear infinite;
+          animation: wave 8s linear infinite;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+  pointer-events: none;
+}
+
+@-webkit-keyframes wave {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -1600px 0px;
+  }
+}
+
+@keyframes wave {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -1600px 0px;
+  }
+}
+
+.menu-container {
+  position: absolute;
+  padding: 40px;
+  z-index: 10;
+}
+
+.menu-container ul {
+  list-style: none;
+}
+
+.menu-container li:nth-child(1) {
+  font-weight: bolder;
+  font-size: 28px;
+}
+
+.menu-container li {
+  margin-bottom: 10px;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+}
+
+.menu-container li:hover {
+  cursor: pointer;
+}
+
+.timer {
+  background: black;
+  height: 5px;
+  width: 100%;
+  border-radius: 0px 20px 20px 0px;
+}
+
+.timer-active {
+  -webkit-animation: timer 12s ease infinite;
+          animation: timer 12s ease infinite;
+}
+
+@-webkit-keyframes timer {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 25%;
+  }
+  50% {
+    width: 50%;
+  }
+  75% {
+    width: 75%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes timer {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 25%;
+  }
+  50% {
+    width: 50%;
+  }
+  75% {
+    width: 75%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+.equalizer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  vertical-align: bottom;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  display: none;
+}
+
+.music-bar {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  bottom: 0;
+  height: 150px;
+  width: 100%;
+  vertical-align: bottom;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-blend-mode: multiply;
+}
+
+/*@media only screen and (max-width: 768px) {
+    .pads {
+      height: 40vh;
+  
+      div {
+        height: 40vh;
+      }
+  
+      span {
+        display: none;
+      }
+    }
+  
+    .wave {
+      top: 60vh;
+    }
+  
+    header {
+      top: 35%;
+    }
+  
+    header h1 {
+      margin-top: 60px;
+      font-size: 28px;
+      margin-top: 0px;
+    }
+    header p {
+      font-size: 14px;
+    }
+  
+    #visual {
+      width: 70px;
+      height: 70px;
+    }
+  
+    .menu-container {
+      padding: 20px;
+    }
+  }*/
 /*# sourceMappingURL=styles.css.map */
