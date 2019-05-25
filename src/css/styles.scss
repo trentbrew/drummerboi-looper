@@ -160,10 +160,10 @@
     }
   }
   
-.timer {
+#timer {
   background: black;
   height: 5px;
-  width: 100%;
+  width: 0%;
   border-radius: 0px 20px 20px 0px;
 }
 
@@ -188,6 +188,20 @@
   100% {
     width: 100%;
     opacity: 0;
+  }
+}
+
+.waiting {
+  animation: waiting ease infinite;
+}
+
+@keyframes waiting {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
   }
 }
 

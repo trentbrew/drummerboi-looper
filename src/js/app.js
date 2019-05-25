@@ -1,56 +1,53 @@
-//- - - - - - - - - - main method - - - - - - - - - -
+//- - - - - - - - - - main - - - - - - - - - -
 
 window.onload = function() {
-    const pads_DOM = document.querySelectorAll(".pads div");
+    playing = [];
+    pending = [];
+    first = true;
 
-    const Drummerboi = new App();
+    const pads_DOM = document.querySelectorAll(".pads div");
+    const optionsUI = document.getElementById("options");
+
+    const Drummerboi = new App(optionsUI);
 
     Drummerboi.buildSoundpacks(pads_DOM);
     Drummerboi.displaySoundpacks();
 
-    currentSoundpack = Drummerboi.soundpacks[0];
-    playing = [];
-
-    console.log(currentSoundpack);
+    const Timer1 = new Timer(pending, playing);
     
-    //----------event listeners----------
+    //Timer1.startTimer();
 
-    pads_DOM[0].onclick = function() {
-        currentSoundpack.pads[0].playSound();
-        playing.push(currentSoundpack.pads[0]);
-        console.log(playing);
-    }
-    pads_DOM[1].onclick = function() {
-        currentSoundpack.pads[1].playSound();
-        playing.push(currentSoundpack.pads[1]);
-        console.log(playing);
-    }
-    pads_DOM[2].onclick = function() {
-        currentSoundpack.pads[2].playSound();
-        playing.push(currentSoundpack.pads[2]);
-        console.log(playing);
-    }
-    pads_DOM[3].onclick = function() {
-        currentSoundpack.pads[3].playSound();
-        playing.push(currentSoundpack.pads[3]);
-        console.log(playing);
-    }
-    pads_DOM[4].onclick = function() {
-        currentSoundpack.pads[4].playSound();
-        playing.push(currentSoundpack.pads[4]);
-        console.log(playing);
-    }
-    pads_DOM[5].onclick = function() {
-        currentSoundpack.pads[5].playSound();
-        playing.push(currentSoundpack.pads[5]);
-        console.log(playing);
-    }
+    currentSoundpack = Drummerboi.soundpacks[0];
+    
+    //-----event handlers-----
+
+    pads_DOM.forEach((pad, index) => {
+        pad.onclick = function() {
+            console.log("first try?: " + first);
+            if(first) {
+                currentSoundpack.pads[index].playSound();
+                pending.push(currentSoundpack.pads[index]);
+                playing.push(currentSoundpack.pads[index]);
+                Timer1.startTimer(pads_DOM);
+                first = false;
+            }
+            else {
+                pending.push(currentSoundpack.pads[index]);
+                playing.push(currentSoundpack.pads[index]);
+                pad.classList.add("waiting");
+            }
+            console.log("pending: " + pending);
+        }
+    });
 }
 
 //- - - - - - - - - - app - - - - - - - - - -
 
 class App {
-    optionsUI = document.getElementById("options");
+    constructor(optionsUI) {
+        this.optionsUI = optionsUI;
+    }
+
     soundpacks = [];
 
     buildSoundpacks() {
@@ -112,7 +109,6 @@ class App {
 //- - - - - - - - - - soundpack - - - - - - - - - -
 
 class Soundpack {
-    
     constructor(name, pads) {
         this.name = name;
         this.pads = pads;
@@ -126,46 +122,26 @@ class Soundpack {
 //- - - - - - - - - - pad - - - - - - - - - -
 
 class Pad {
-    isPlaying = true;
-    volume = 1;
-    visualOn = false;
-    equalizer = $('.equalizer');
-    bars = $('music-bars');
-
     constructor(sound, color, loopable) {
         this.sound = sound;
         this.color = color;
         this.loopable = loopable;
     }
 
+    isPlaying = true;
+    volume = 1;
+    visualOn = false;
+    equalizer = $('.equalizer');
+    bars = $('music-bars');
+    audio = new Audio();
+
     playSound() {
-        var sound = new Audio(this.sound);
-        if(this.loopable) {
-            sound.loop = true;
-        }
-        else {
-            sound.loop = false;
-        }
-
-        sound.play();
-        
-        //console.log("is playing");
-        //console.log(this.loopable);
-
-        setTimeout(function() {
-            if(this.loopable) {
-                this.isPlaying = true;
-            }
-            else {
-                this.isPlaying = false;
-            }
-        }, 12000);
-
-        console.log(this.isPlaying);
+        this.audio.src = this.sound;
+        this.audio.play();
     }
 
     stopSound() {
-
+        this.audio.stop();
     }
 
     runVisual() {
@@ -198,17 +174,36 @@ class Pad {
 
 //- - - - - - - - - - timer - - - - - - - - - -
 
-class Timer extends App {
-    constructor(duration) {
-        this.duration = duration;
+class Timer {
+    constructor(pending, playing) {
+        this.pending = pending;
+        this.playing = playing;
     }
 
-    startTimer() {
-
+    startTimer(pads_DOM) {
+        var _this = this;
+        this.displayTimer();
+        setTimeout(function() {
+            for(let i = 0; i < pending.length; i++) {
+              pending[i].playSound();
+              console.log("dump pending");
+            }
+            pads_DOM.forEach((pad, index) => {
+                pads_DOM[index].classList.remove("waiting");
+            });
+            pending = [];
+            _this.startTimer(pads_DOM);
+          }, 12000);
     }
 
     stopTimer() {
+        var timer_DOM = document.getElementById("timer");
+        timer_DOM.classList.remove("timer-active");
+    }
 
+    displayTimer() {
+        var timer_DOM = document.getElementById("timer");
+        timer_DOM.classList.add("timer-active");
     }
 }
 

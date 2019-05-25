@@ -164,10 +164,10 @@ header p {
   cursor: pointer;
 }
 
-.timer {
+#timer {
   background: black;
   height: 5px;
-  width: 100%;
+  width: 0%;
   border-radius: 0px 20px 20px 0px;
 }
 
@@ -213,6 +213,29 @@ header p {
   100% {
     width: 100%;
     opacity: 0;
+  }
+}
+
+.waiting {
+  -webkit-animation: waiting ease infinite;
+          animation: waiting ease infinite;
+}
+
+@-webkit-keyframes waiting {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes waiting {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
   }
 }
 
