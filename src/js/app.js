@@ -2,6 +2,7 @@
 
 window.onload = function() {
     playing = [];
+    playing_DOM = [];
     pending = [];
     first = true;
 
@@ -23,20 +24,26 @@ window.onload = function() {
 
     pads_DOM.forEach((pad, index) => {
         pad.onclick = function() {
-            console.log("first try?: " + first);
+            //console.log("first try?: " + first);
             if(first) {
+                for(let i = 0; i < pad.children.length; i++) {
+                    pad.children[i].style.opacity = 0.25;
+                }
+                console.log(pad.children);
                 currentSoundpack.pads[index].playSound();
                 pending.push(currentSoundpack.pads[index]);
                 playing.push(currentSoundpack.pads[index]);
+                playing_DOM.push(pad);
                 Timer1.startTimer(pads_DOM);
                 first = false;
             }
             else {
                 pending.push(currentSoundpack.pads[index]);
                 playing.push(currentSoundpack.pads[index]);
+                playing_DOM.push(pad);
                 pad.classList.add("waiting");
             }
-            console.log("pending: " + pending);
+            //console.log("pending: " + pending);
         }
     });
 }
@@ -132,7 +139,7 @@ class Pad {
     volume = 1;
     visualOn = false;
     equalizer = $('.equalizer');
-    bars = $('music-bars');
+    bars = $('pads p');
     audio = new Audio();
 
     playSound() {
@@ -144,26 +151,11 @@ class Pad {
         this.audio.stop();
     }
 
-    runVisual() {
-        //var t1 = new TimelineMax({onUpdate:updateUI, repeat:-1})
-	    window.setInterval(function() {
-		    $(this.bars).each(function() {
-			    TweenMax.to(this, 0.2, {height: Math.floor(Math.random()*121) + 30, ease:Power0.easeNone, yoyo: true});
-		    });
-	    }, 200);
-    }
-
     playVisual() {
-        this.equalizer.css({
-            'dispaly': 'grid'
-        });
         this.visualOn = true;
     }
 
     stopVisual() {
-        this.equalizer.css({
-            'display': 'none'
-        });
         this.visualOn = false;
     }
 
@@ -175,21 +167,27 @@ class Pad {
 //- - - - - - - - - - timer - - - - - - - - - -
 
 class Timer {
-    constructor(pending, playing) {
-        this.pending = pending;
+    constructor(playing, pending) {
         this.playing = playing;
+        this.pending = pending;
     }
 
     startTimer(pads_DOM) {
         var _this = this;
         this.displayTimer();
         setTimeout(function() {
-            for(let i = 0; i < pending.length; i++) {
-              pending[i].playSound();
+            for(let i = 0; i < playing.length; i++) {
+              playing[i].playSound();
               console.log("dump pending");
             }
             pads_DOM.forEach((pad, index) => {
                 pads_DOM[index].classList.remove("waiting");
+            });
+            playing_DOM.forEach((pad, index) => {
+                for(let i = 0; i < pad.children.length; i++) {
+                    console.log(pad.children[i]);
+                    pad.children[i].style.opacity = 0.25;
+                }
             });
             pending = [];
             _this.startTimer(pads_DOM);
