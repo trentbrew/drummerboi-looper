@@ -5,6 +5,7 @@ window.onload = function() {
     playing_DOM = [];
     pending = [];
     first = true;
+    timerDone = false;
 
     const pads_DOM = document.querySelectorAll(".pads div");
     const optionsUI = document.getElementById("options");
@@ -14,6 +15,8 @@ window.onload = function() {
     Drummerboi.buildSoundpacks(pads_DOM);
     Drummerboi.displaySoundpacks();
 
+    const options_DOM = document.querySelectorAll("li");
+
     const Timer1 = new Timer(pending, playing);
     
     //Timer1.startTimer();
@@ -22,14 +25,14 @@ window.onload = function() {
     
     //-----event handlers-----
 
+    //pad click
     pads_DOM.forEach((pad, index) => {
         pad.onclick = function() {
-            //console.log("first try?: " + first);
             if(first) {
                 for(let i = 0; i < pad.children.length; i++) {
                     pad.children[i].style.opacity = 0.25;
                 }
-                console.log(pad.children);
+                //console.log(pad.children);
                 currentSoundpack.pads[index].playSound();
                 pending.push(currentSoundpack.pads[index]);
                 playing.push(currentSoundpack.pads[index]);
@@ -38,12 +41,55 @@ window.onload = function() {
                 first = false;
             }
             else {
-                pending.push(currentSoundpack.pads[index]);
-                playing.push(currentSoundpack.pads[index]);
-                playing_DOM.push(pad);
-                pad.classList.add("waiting");
+                if(!(currentSoundpack.pads[index].isPlaying)) {
+                    pending.push(currentSoundpack.pads[index]);
+                    playing.push(currentSoundpack.pads[index]);
+                    playing_DOM.push(pad);
+                    pad.classList.add("waiting");
+                    $("header p").html("Just a sec...");
+                }
+                else {
+                    pad.classList.remove("waiting");
+                    currentSoundpack.pads[index].stopSound();
+                    console.log(index);
+                    playing.pop();
+                    Timer1.equalizerOff(pad);
+                }
+
+                if(playing.length == 0) {
+                    first = true;
+                    Timer1.stopTimer();
+                    console.log('STOP TIMER');
+                }
             }
-            //console.log("pending: " + pending);
+
+            console.log("playing: " + playing.length);
+        }
+    });
+
+    //soundpack selection
+    options_DOM.forEach((option, index) => {
+        option.onclick = function() {
+            console.log(options_DOM);
+            console.log("clicked " + option.innerHTML);
+            for(let i = 0; i < options_DOM.length; i++) {
+                options_DOM[i].style.fontSize = "16px";
+                options_DOM[i].style.fontWeight = "normal";
+                options_DOM[i].style.color = "black";
+            }   
+            //change title styles
+            option.style.fontSize = 28;
+            option.style.fontWeight = "bolder";
+            option.style.color = currentSoundpack.pads[0].color;
+
+            //change pad styles
+            //for(let i = 0; i < pads_DOM.length; i++) {
+            //    console.log("changing pad " + i + " to " + currentSoundpack.pads[i].color);
+            //    pads_DOM[i].style.backgroundColor = currentSoundpack.pads[i].color;
+            //}
+
+            //Drummerboi.updateSoundpacks();
+            //Drummerboi.displaySoundpacks();
         }
     });
 }
@@ -62,7 +108,7 @@ class App {
             new Soundpack(
                 "Drums",
                 [
-                    new Pad('sounds/splice/drums/drums1.wav', "red", false),
+                    new Pad('sounds/splice/drums/drums1.wav', "red", true),
                     new Pad('sounds/splice/drums/drums2.wav', "orange", true),
                     new Pad('sounds/splice/drums/drums3.wav', "yellow", true),
                     new Pad('sounds/splice/drums/drums4.wav', "green", true),
@@ -76,7 +122,7 @@ class App {
                     new Pad('sounds/splice/drums/drums1.wav', "violet", true),
                     new Pad('sounds/splice/drums/drums2.wav', "blue", true),
                     new Pad('sounds/splice/drums/drums3.wav', "green", true),
-                    new Pad('sounds/splice/drums/drums4.wav', "yellow", true),
+                    new Pad('sounds/splice/drums/drums4.wav', "gray", true),
                     new Pad('sounds/splice/drums/drums5.wav', "orange", true),
                     new Pad('sounds/splice/drums/drums6.wav', "red", true)
                 ]
@@ -93,6 +139,10 @@ class App {
                 ]
             ),
         );
+    }
+
+    updateSoundpacks() {
+        options_DOM.children = [0];
     }
 
     displaySoundpacks() {
@@ -135,7 +185,7 @@ class Pad {
         this.loopable = loopable;
     }
 
-    isPlaying = true;
+    isPlaying = false;
     volume = 1;
     visualOn = false;
     equalizer = $('.equalizer');
@@ -145,10 +195,12 @@ class Pad {
     playSound() {
         this.audio.src = this.sound;
         this.audio.play();
+        this.isPlaying = true;
     }
 
     stopSound() {
-        this.audio.stop();
+        this.audio.pause();
+        this.isPlaying = false;
     }
 
     playVisual() {
@@ -174,8 +226,10 @@ class Timer {
 
     startTimer(pads_DOM) {
         var _this = this;
+        timerDone = false;
         this.displayTimer();
         setTimeout(function() {
+            $("header p").html("Make music by tapping");
             for(let i = 0; i < playing.length; i++) {
               playing[i].playSound();
               console.log("dump pending");
@@ -183,20 +237,36 @@ class Timer {
             pads_DOM.forEach((pad, index) => {
                 pads_DOM[index].classList.remove("waiting");
             });
-            playing_DOM.forEach((pad, index) => {
-                for(let i = 0; i < pad.children.length; i++) {
-                    console.log(pad.children[i]);
-                    pad.children[i].style.opacity = 0.25;
-                }
-            });
+            console.log("timer done?: " + timerDone);
+            if(timerDone) {
+                return; 0
+            }
+            _this.equalizerOn();
             pending = [];
             _this.startTimer(pads_DOM);
           }, 12000);
     }
 
+    equalizerOn() {
+        playing_DOM.forEach((pad, index) => {
+            for(let i = 0; i < pad.children.length; i++) {
+                //console.log(pad.children[i]);
+                pad.children[i].style.opacity = 0.25;
+            }
+        });
+    }
+
+    equalizerOff(pad) {
+        for(let i = 0; i < pad.children.length; i++) {
+            //console.log(pad.children[i]);
+            pad.children[i].style.opacity = 0;
+        }
+    }
+
     stopTimer() {
         var timer_DOM = document.getElementById("timer");
         timer_DOM.classList.remove("timer-active");
+        timerDone = true;
     }
 
     displayTimer() {

@@ -9,7 +9,7 @@
 
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: white;
+  background: #e0e0e0;
 }
 
 .app {
@@ -22,6 +22,8 @@ header {
   left: 0;
   right: 0;
   top: 140px;
+  -webkit-transition: 500ms;
+  transition: 500ms;
 }
 
 header h1 {
@@ -34,8 +36,10 @@ header h1 {
 header p {
   font-size: 20px;
   color: black;
-  opacity: 0.4;
+  opacity: 0.7;
   margin-top: -25px;
+  -webkit-transition: 300ms;
+  transition: 300ms;
 }
 
 .pads {
@@ -202,11 +206,13 @@ header p {
   width: 100%;
   height: 140px;
   top: calc(50% - 10px);
+  background: url("../../res/wave.svg");
   -webkit-animation: wave 8s linear infinite;
           animation: wave 8s linear infinite;
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
   pointer-events: none;
+  z-index: 2;
 }
 
 @-webkit-keyframes wave {
@@ -253,15 +259,19 @@ header p {
 }
 
 #timer {
+  position: absolute;
   background: black;
-  height: 5px;
+  height: 10px;
   width: 0%;
-  border-radius: 0px 20px 20px 0px;
+  opacity: 0.4;
+  bottom: 0px;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .timer-active {
-  -webkit-animation: timer 12s ease infinite;
-          animation: timer 12s ease infinite;
+  -webkit-animation: timer 12s ease-out infinite;
+          animation: timer 12s ease-out infinite;
 }
 
 @-webkit-keyframes timer {
@@ -276,7 +286,7 @@ header p {
   }
   75% {
     width: 75%;
-    opacity: 1;
+    opacity: 0.4;
   }
   100% {
     width: 100%;
@@ -296,7 +306,7 @@ header p {
   }
   75% {
     width: 75%;
-    opacity: 1;
+    opacity: 0.4;
   }
   100% {
     width: 100%;
