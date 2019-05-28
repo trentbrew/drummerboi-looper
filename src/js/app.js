@@ -82,11 +82,15 @@ window.onload = function() {
             option.style.fontWeight = "bolder";
             //option.style.color = currentSoundpack.pads[0].color;
 
-            console.log(option.innerHTML);
-            for(let i = 0; i < Drummerboi.soundpacks.length; i++) {
-                if(option.innerHTML == Drummerboi.soundpacks[index].name) {
-                    currentSoundpack = Drummerboi.soundpacks[i];
-                }
+
+            //changing current soundpack
+            //console.log(option.innerHTML);
+            /*for(let i = 0; i < Drummerboi.soundpacks.length; i++) {
+
+            }*/
+
+            if(option.innerHTML == Drummerboi.soundpacks[index].name) {
+                currentSoundpack = Drummerboi.soundpacks[index];
             }
 
             //change pad styles
@@ -95,7 +99,11 @@ window.onload = function() {
                 pads_DOM[i].style.background = currentSoundpack.pads[i].color;
             }
 
-            console.log("current soundpack: " + currentSoundpack.name);
+            pads_DOM.forEach((pad, index) => {
+                Timer1.equalizerOff(pad);
+            });
+
+            //console.log("current soundpack: " + currentSoundpack.name);
 
             //Drummerboi.updateSoundpacks();
             //Drummerboi.displaySoundpacks();
@@ -128,23 +136,23 @@ class App {
             new Soundpack(
                 "Bass",
                 [
-                    new Pad('sounds/splice/drums/bass1.wav', "violet", true),
-                    new Pad('sounds/splice/drums/bass2.wav', "blue", true),
-                    new Pad('sounds/splice/drums/bass3.wav', "green", true),
-                    new Pad('sounds/splice/drums/bass4.wav', "gray", true),
-                    new Pad('sounds/splice/drums/bass5.wav', "orange", true),
-                    new Pad('sounds/splice/drums/bass6.wav', "red", true)
+                    new Pad('sounds/splice/bass/bass1.wav', "violet", true),
+                    new Pad('sounds/splice/bass/bass2.wav', "blue", true),
+                    new Pad('sounds/splice/bass/bass3.wav', "green", true),
+                    new Pad('sounds/splice/bass/bass4.wav', "gray", true),
+                    new Pad('sounds/splice/bass/bass5.wav', "orange", true),
+                    new Pad('sounds/splice/bass/bass6.wav', "red", true)
                 ]
             ),
             new Soundpack(
                 "Guitar",
                 [
-                    new Pad('sounds/splice/drums/guitar1.wav', "brown", true),
-                    new Pad('sounds/splice/drums/guitar2.wav', "gray", true),
-                    new Pad('sounds/splice/drums/guitar3.wav', "black", true),
-                    new Pad('sounds/splice/drums/guitar4.wav', "lightblue", true),
-                    new Pad('sounds/splice/drums/guitar5.wav', "yellow", true),
-                    new Pad('sounds/splice/drums/guitar6.wav', "green", true)
+                    new Pad('sounds/splice/guitar/guitar1.wav', "brown", true),
+                    new Pad('sounds/splice/guitar/guitar2.wav', "gray", true),
+                    new Pad('sounds/splice/guitar/guitar3.wav', "black", true),
+                    new Pad('sounds/splice/guitar/guitar4.wav', "lightblue", true),
+                    new Pad('sounds/splice/guitar/guitar5.wav', "yellow", true),
+                    new Pad('sounds/splice/guitar/guitar7.wav', "green", true)
                 ]
             ),
         );
