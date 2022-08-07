@@ -278,8 +278,8 @@ header p {
   }
 }
 .waiting {
-  -webkit-animation: waiting 200ms ease infinite;
-          animation: waiting 200ms ease infinite;
+  -webkit-animation: waiting 600ms ease infinite;
+          animation: waiting 600ms ease infinite;
 }
 
 @-webkit-keyframes waiting {
