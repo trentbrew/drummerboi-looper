@@ -1,4 +1,4 @@
-//- - - - - - - - - - main - - - - - - - - - -
+// ---------- main ----------
 
 window.onload = function() {
     playing = [];
@@ -67,6 +67,14 @@ window.onload = function() {
         }
     });
 
+    for(let i = 0; i < options_DOM.length; i++) {
+        if (i != 0) {
+            options_DOM[i].style.fontSize = "16px";
+            options_DOM[i].style.fontWeight = "normal";
+            options_DOM[i].style.color = "#484848";   
+        }
+    }
+
     //soundpack selection
     options_DOM.forEach((option, index) => {
         option.onclick = function() {
@@ -75,12 +83,13 @@ window.onload = function() {
             for(let i = 0; i < options_DOM.length; i++) {
                 options_DOM[i].style.fontSize = "16px";
                 options_DOM[i].style.fontWeight = "normal";
-                options_DOM[i].style.color = "black";
+                options_DOM[i].style.color = "#777777";
             }
             //change title styles
-            option.style.fontSize = 28;
-            option.style.fontWeight = "bolder";
-            option.style.color = currentSoundpack.pads[index].color;
+            // option.style.fontSize = 28;
+            // option.style.fontWeight = "bolder";
+            // option.style.color = currentSoundpack.pads[index].color;
+            option.style.color = '#ffffff';
 
 
             //changing current soundpack
@@ -123,7 +132,7 @@ class App {
     buildSoundpacks() {
         this.soundpacks.push(
             new Soundpack(
-                "Drums",
+                "DRUMS",
                 [
                     new Pad('sounds/splice/drums/drums1.wav', "#79B473", true),
                     new Pad('sounds/splice/drums/drums2.wav', "#70A37F", true),
@@ -134,7 +143,7 @@ class App {
                 ]
             ),
             new Soundpack(
-                "Bass",
+                "BASS",
                 [
                     new Pad('sounds/splice/bass/bass1.wav', "#000000", true),
                     new Pad('sounds/splice/bass/bass2.wav', "#0C1821", true),
@@ -145,7 +154,7 @@ class App {
                 ]
             ),
             new Soundpack(
-                "Guitar",
+                "GUITAR",
                 [
                     new Pad('sounds/splice/guitar/guitar1.wav', "#650D1B", true),
                     new Pad('sounds/splice/guitar/guitar2.wav', "#823200", true),

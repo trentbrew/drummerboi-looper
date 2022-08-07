@@ -8,7 +8,7 @@
 
 body {
   font-family: "Montserrat", sans-serif;
-  background: white;
+  background: black;
 }
 
 .app {
@@ -52,18 +52,19 @@ header p {
 }
 
 .pads > div {
-  height: 50vh;
-  transition: 300ms;
+  height: calc(100vh - 48px);
   text-align: left;
   display: flex;
-  transform: rotate(180deg);
+  transition: 300ms;
 }
 .pads > div p {
   position: relative;
   height: 40px;
   width: 100%;
   font-size: 24px;
-  background-color: black;
+  background: white;
+  -webkit-backdrop-filter: invert(1);
+          backdrop-filter: invert(1);
   opacity: 0;
 }
 .pads > div p:nth-child(1) {
@@ -116,28 +117,28 @@ header p {
 }
 @-webkit-keyframes equalizer {
   0% {
-    height: 75px;
+    height: 375px;
   }
   50% {
-    height: 150px;
+    height: 450px;
   }
   100% {
-    height: 75px;
+    height: 375px;
   }
 }
 @keyframes equalizer {
   0% {
-    height: 75px;
+    height: 375px;
   }
   50% {
-    height: 150px;
+    height: 450px;
   }
   100% {
-    height: 75px;
+    height: 375px;
   }
 }
 .pads > div:hover {
-  filter: brightness(0.7);
+  filter: brightness(1.2);
   cursor: pointer;
 }
 
@@ -222,24 +223,23 @@ header p {
   margin-bottom: 10px;
   transition: 300ms;
 }
-.menu-container li:hover {
-  cursor: pointer;
-}
-
 #timer {
   position: absolute;
-  background: #e0e0e0;
-  height: 10px;
+  background: white;
+  height: 3px;
   width: 0%;
   opacity: 1;
-  bottom: 0px;
+  top: 45px;
   z-index: 1;
+  -webkit-backdrop-filter: invert(1);
+          backdrop-filter: invert(1);
   pointer-events: none;
+  z-index: -1;
 }
 
 .timer-active {
-  -webkit-animation: timer 12s ease-out infinite;
-          animation: timer 12s ease-out infinite;
+  -webkit-animation: timer 12s cubic-bezier(0, 0.55, 0.45, 1) infinite;
+          animation: timer 12s cubic-bezier(0, 0.55, 0.45, 1) infinite;
 }
 
 @-webkit-keyframes timer {
@@ -278,8 +278,8 @@ header p {
   }
 }
 .waiting {
-  -webkit-animation: waiting 250ms ease infinite;
-          animation: waiting 250ms ease infinite;
+  -webkit-animation: waiting 200ms ease infinite;
+          animation: waiting 200ms ease infinite;
 }
 
 @-webkit-keyframes waiting {
@@ -287,7 +287,7 @@ header p {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
   100% {
     opacity: 1;
@@ -299,7 +299,7 @@ header p {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
   100% {
     opacity: 1;
@@ -307,9 +307,9 @@ header p {
 }
 .equalizer {
   position: relative;
-  height: 100%;
   width: 100%;
   bottom: 0px;
+  background: red;
   vertical-align: bottom;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -366,4 +366,20 @@ header p {
 a {
   text-decoration: none;
   color: black;
+}
+
+#options {
+  list-style: none;
+  height: 48px;
+  position: absolute;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+}
+#options li {
+  margin: 0px 12px;
 }/*# sourceMappingURL=styles.css.map */
